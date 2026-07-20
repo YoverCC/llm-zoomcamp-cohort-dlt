@@ -1,12 +1,13 @@
 import os
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Optional
 
 from dotenv import load_dotenv
 import dlt
 from dlt.sources.rest_api import RESTAPIConfig, rest_api_resources
 
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
 
 
 @dlt.source(name="logfire")
@@ -39,13 +40,14 @@ def logfire_source(access_token: Optional[str] = dlt.secrets.value):
         "client": {
             "base_url": base_url,
             "auth": {"type": "bearer", "token": access_token},
+            "headers": {"Accept": "application/json"},
         },
         "resource_defaults": {
             "write_disposition": "append",
         },
         "resources": [
             {
-                "name": "query",
+                "name": "agent_traces",
                 "endpoint": {
                     "path": "v2/query",
                     "method": "POST",
@@ -57,10 +59,6 @@ def logfire_source(access_token: Optional[str] = dlt.secrets.value):
                     "paginator": "single_page",
                     "data_selector": "data",
                 },
-            },
-            {
-                "name": "users",
-                "endpoint": {"path": "users"},
             },
         ],
     }

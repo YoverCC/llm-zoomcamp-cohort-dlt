@@ -1,3 +1,21 @@
 .env
+.env.*
 .venv
 logfire-recovery-codes.txt
+
+# dlt pipeline artifacts
+.dlt/data/
+.dlt/logs/
+*.duckdb
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# OS
+.DS_Store
+*.swp
+*.swo
